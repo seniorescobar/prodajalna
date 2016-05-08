@@ -199,7 +199,7 @@ var vrniRacune = function(callback) {
 streznik.post('/prijava', function(zahteva, odgovor) {
   var form = new formidable.IncomingForm();
   
-  form.parse(zahteva, function (napaka1, polja, datoteke) {
+  form.parse(zahteva, function (napaka, polja, datoteke) {
     var sporocilo = "";
     try {
       var stmt = pb.prepare("\
@@ -216,11 +216,7 @@ streznik.post('/prijava', function(zahteva, odgovor) {
     } catch (err) {
       sporocilo = "Prišlo je do napake pri registraciji nove stranke. Prosim preverite vnešene podatke in poskusite znova.";
     }
-    vrniStranke(function(napaka1, stranke) {
-      vrniRacune(function(napaka2, racuni) {
-        odgovor.render('prijava', {sporocilo: sporocilo, seznamStrank: stranke, seznamRacunov: racuni});
-      }) 
-    });
+    odgovor.redirect('/prijava');
   });
 })
 
