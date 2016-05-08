@@ -216,7 +216,11 @@ streznik.post('/prijava', function(zahteva, odgovor) {
     } catch (err) {
       sporocilo = "Prišlo je do napake pri registraciji nove stranke. Prosim preverite vnešene podatke in poskusite znova.";
     }
-    odgovor.redirect('/prijava');
+    vrniStranke(function(napaka1, stranke) {
+      vrniRacune(function(napaka2, racuni) {
+        odgovor.render('prijava', {sporocilo: sporocilo, seznamStrank: stranke, seznamRacunov: racuni});
+      })
+    });
   });
 })
 
